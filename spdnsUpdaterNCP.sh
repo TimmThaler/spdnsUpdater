@@ -32,8 +32,8 @@ configure()
     chmod 700 "$INSTALLPATH"/spdnsUpdater.sh
     chmod +x "$CRONFILE"
 
-    # First-time execution of duck script
-    "$INSTALLPATH"/spdnsUpdater.sh $DOMAIN $TOKEN > /dev/null 2>&1
+    # First-time execution of update script and print response from spdns.de server
+    "$INSTALLPATH"/spdnsUpdater.sh $DOMAIN $TOKEN
 
     # Removes config files and cron job if ACTIVE_ is set to no
   elif [[ $ACTIVE_ == "no" ]]; then
