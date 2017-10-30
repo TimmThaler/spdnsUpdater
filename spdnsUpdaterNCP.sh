@@ -24,7 +24,7 @@ configure()
     mkdir -p "$INSTALLPATH"
 
     # Creates spdnsUpdater.sh script that checks for updates to DNS records
-    curl https://raw.githubusercontent.com/TimmThaler/spdnsUpdater/master/spdnsUpdater.sh > "$INSTALLPATH"/spdnsUpdater.sh
+    curl -s https://raw.githubusercontent.com/TimmThaler/spdnsUpdater/master/spdnsUpdater.sh > "$INSTALLPATH"/spdnsUpdater.sh
 
     # Adds file to cron to run script for DNS record updates and change permissions 
     touch $CRONFILE
