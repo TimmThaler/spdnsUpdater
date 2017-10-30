@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# DuckDNS installation on Raspbian for NextcloudPi
+# spDYN installation on Raspbian for NextcloudPi
 #
 #
-# Copyleft 2017 by Courtney Hicks
+# Copyleft 2017 by Timm Goldenstein
 # GPL licensed (see end of file) * Use at your own risk!
 #
 
 ACTIVE_=no
 DOMAIN_=mycloud.spdyn.de
-TOKEN_=your-duckdns-token
+TOKEN_=your-spdns-token
 
 INSTALLDIR=spdnsupdater
 INSTALLPATH=/usr/local/etc/$INSTALLDIR
