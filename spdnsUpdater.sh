@@ -14,9 +14,9 @@ get_ip_url="https://api.ipify.org/"
 update_url="https://update.spdyn.de/nic/update"
 
 
-### Update procedure the IP at spdns.de
+### Update procedure
 function spdnsUpdater { 
-	# Send the current IP address to spdns.de
+	# Send the current IP address to spdyn.de
 	# and show the response
 	
 	params=$1
@@ -80,3 +80,4 @@ if [ $# -eq 2 ]
 		echo "Alternative:	./spdnsUpdater.sh <hostname> <user> <password>"
 		echo
 fi
+
