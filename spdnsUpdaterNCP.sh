@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# spDYN installation on Raspbian for NextcloudPi
+# spDYN setup for NextcloudPi
 #
 #
 # Copyleft 2017 by Timm Goldenstein
