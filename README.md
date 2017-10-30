@@ -1,7 +1,7 @@
 # spdnsUpdate -- Securepoint DNS Updater
 # Shell Version
 
-Bash script based on [Gerold Bausch's script](https://github.com/gbausch/spdnsUpdater) to update IP addresses on [Securepoint Dynamic DNS Service](https://spdyn.de).
+Bash script based on [Gerold Bausch's python script](https://github.com/gbausch/spdnsUpdater) to update IP addresses on [Securepoint Dynamic DNS Service](https://spdyn.de).
 
 **Usage:**
 -	Recommended usage:	```./spdnsUpdater.sh <hostname> <token>```
@@ -10,4 +10,3 @@ Bash script based on [Gerold Bausch's script](https://github.com/gbausch/spdnsUp
 In case you want to auto update the device ip address at every reboot, insert one of the lines above in ```/etc/rc.local``` (Linux only).
 
 **Required packages:** ```curl```
-On Linux and MacOS systems that should be on board
