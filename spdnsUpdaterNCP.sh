@@ -8,7 +8,7 @@
 #
 
 ACTIVE_=no
-DOMAIN_=mycloud.spdyn.de
+DOMAIN_=mycloud.spdns.de
 TOKEN_=your-spdns-token
 
 INSTALLDIR=spdnsupdater
@@ -112,19 +112,19 @@ EOF
     
     # Adds file to cron to run script for DNS record updates and change permissions 
     touch $CRONFILE
-    echo "0 * * * * root $INSTALLPATH/spDNSupdater.sh $DOMAIN $TOKEN >/dev/null 2>&1" > "$CRONFILE"
+    echo "0 * * * * root $INSTALLPATH/spdnsUpdater.sh $DOMAIN_ $TOKEN_ >/dev/null 2>&1" > "$CRONFILE"
     chmod 700 "$INSTALLPATH"/spdnsUpdater.sh
     chmod a+x "$INSTALLPATH"/spdnsUpdater.sh
     chmod +x "$CRONFILE"
 
     # First-time execution of update script and print response from spdns.de server
-    "$INSTALLPATH"/spdnsUpdater.sh $DOMAIN $TOKEN
+    "$INSTALLPATH"/spdnsUpdater.sh "$DOMAIN_" "$TOKEN_"
 
     # Removes config files and cron job if ACTIVE_ is set to no
   elif [[ $ACTIVE_ == "no" ]]; then
     rm -f "$CRONFILE"
-    #rm -f "$INSTALLPATH"/spdnsUpdater.sh
-    #rmdir "$INSTALLPATH"
+    rm -f "$INSTALLPATH"/spdnsUpdater.sh
+    rmdir "$INSTALLPATH"
     echo "spdnsUpdater is now disabled"
   fi
 }
