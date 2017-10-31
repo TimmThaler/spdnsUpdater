@@ -122,7 +122,9 @@ EOF
 
     # Removes config files and cron job if ACTIVE_ is set to no
   elif [[ $ACTIVE_ == "no" ]]; then
+    echo "... removing cronfile: $CRONFILE"
     rm -f "$CRONFILE"
+    echo "... removing spdnsUpdater.sh script"
     rm -f "$INSTALLPATH"/spdnsUpdater.sh
     rmdir "$INSTALLPATH"
     echo "spdnsUpdater is now disabled"
