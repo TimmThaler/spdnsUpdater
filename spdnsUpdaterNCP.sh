@@ -16,20 +16,109 @@ INSTALLPATH=/usr/local/etc/$INSTALLDIR
 CRONFILE=/etc/cron.d/spdnsupdater
 DESCRIPTION="Free Dynamic DNS provider (need account from https://spdyn.de)"
 
-install() { :; }
+install() {
+
+  # Create the spdnsUpdater.sh
+  mkdir -p "$INSTALLPATH"
+  # Write the script to file
+  cat > "$INSTALLPATH"/spdnsUpdater.sh <<'EOF' 
+#!/bin/bash
+
+### Usage
+#
+#	Recommended usage:	./spdnsUpdater.sh <hostname> <token>
+#	Alternative usage:	./spdnsUpdater.sh <hostname> <user> <passwd>
+#
+
+
+### Configuration
+
+# Get current IP address from
+get_ip_url="https://api.ipify.org/"
+update_url="https://update.spdyn.de/nic/update"
+
+
+### Update procedure
+function spdnsUpdater { 
+	# Send the current IP address to spdyn.de
+	# and show the response
+	
+	params=$1
+	updater=$(curl -s $update_url $params)
+	updater=$(echo $updater | grep -o '^[a-z]*')
+	
+	case "$updater" in
+		abuse) echo "[$updater] Der Host kann nicht aktualisiert werden, da er aufgrund vorheriger fehlerhafter Updateversuche gesperrt ist."
+			;;
+		badauth) echo "[$updater] Ein ungültiger Benutzername und / oder ein ungültiges Kennwort wurde eingegeben."
+			;;
+		good) echo "[$updater] Die Hostname wurde erfolgreich auf die neue IP aktualisiert."
+			;;
+		yours) echo "[$updater] Der angegebene Host kann nicht unter diesem Benutzer-Account verwendet werden."
+			;;
+		notfqdn) echo "[$updater] Der angegebene Host ist kein FQDN."
+			;;
+		numhost) echo "[$updater] Es wurde versucht, mehr als 20 Hosts in einer Anfrage zu aktualisieren."
+			;;
+		nochg) echo "[$updater] Die IP hat sich zum letzten Update nicht geändert."
+			;;
+		nohost) echo "[$updater] Der angegebene Host existiert nicht oder wurde gelöscht."
+			;;
+		fatal) echo "[$updater] Der angegebene Host wurde manuell deaktiviert."
+			;;
+		*) echo "[$updater]"
+			;;
+	esac
+
+}
+
+
+if [ $# -eq 2 ]
+  	then
+  		# if hostname and token
+  		# Get current IP address
+		currip=$(curl -s "$get_ip_url");
+		host=$1
+		token=$2
+    	params="-d hostname=$host -d myip=$currip -d user=$host -d pass=$token"
+    	spdnsUpdater "$params"
+	elif [ $# -eq 3 ]
+		then
+			# if hostname and user and passwd
+			# Get current IP address
+			currip=$(curl -s "$get_ip_url");
+			host=$1
+			user=$2
+			pass=$3
+			params="-d hostname=$host -d myip=$currip -d user=$user -d pass=$pass"
+			spdnsUpdater "$params"
+	else
+		echo
+		echo "Updater for Dynamic DNS at spdns.de"
+		echo "==================================="
+		echo
+		echo "Usage:"
+		echo "------"
+		echo
+		echo "Recommended:	./spdnsUpdater.sh <hostname> <token>"
+		echo "Alternative:	./spdnsUpdater.sh <hostname> <user> <password>"
+		echo
+fi
+EOF
+
+  chmod 700 "$INSTALLPATH"/spdnsUpdater.sh
+  chmod a+x "$INSTALLPATH"/spdnsUpdater.sh
+}
 
 configure() 
 {
   if [[ $ACTIVE_ == "yes" ]]; then
-    mkdir -p "$INSTALLPATH"
-
-    # Creates spdnsUpdater.sh script that checks for updates to DNS records
-    curl -s https://raw.githubusercontent.com/TimmThaler/spdnsUpdater/master/spdnsUpdater.sh > "$INSTALLPATH"/spdnsUpdater.sh
-
+    
     # Adds file to cron to run script for DNS record updates and change permissions 
     touch $CRONFILE
     echo "0 * * * * root $INSTALLPATH/spDNSupdater.sh $DOMAIN $TOKEN >/dev/null 2>&1" > "$CRONFILE"
     chmod 700 "$INSTALLPATH"/spdnsUpdater.sh
+    chmod a+x "$INSTALLPATH"/spdnsUpdater.sh
     chmod +x "$CRONFILE"
 
     # First-time execution of update script and print response from spdns.de server
