@@ -127,8 +127,8 @@ configure()
     # Removes config files and cron job if ACTIVE_ is set to no
   elif [[ $ACTIVE_ == "no" ]]; then
     rm -f "$CRONFILE"
-    rm -f "$INSTALLPATH"/spdnsUpdater.sh
-    rmdir "$INSTALLPATH"
+    #rm -f "$INSTALLPATH"/spdnsUpdater.sh
+    #rmdir "$INSTALLPATH"
     echo "spdnsUpdater is now disabled"
   fi
 }
