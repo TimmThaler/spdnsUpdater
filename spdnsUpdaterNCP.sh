@@ -4,6 +4,8 @@
 #
 #
 # Copyleft 2017 by Timm Goldenstein
+# https://github.com/TimmThaler/spdnsUpdater
+#
 # GPL licensed (see end of file) * Use at your own risk!
 #
 
