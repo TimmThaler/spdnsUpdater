@@ -16,12 +16,8 @@ INSTALLPATH=/usr/local/etc/$INSTALLDIR
 CRONFILE=/etc/cron.d/spdnsupdater
 DESCRIPTION="Free Dynamic DNS provider (need account from https://spdyn.de)"
 
-install() { :; }
+install() {
 
-configure() 
-{
-  if [[ $ACTIVE_ == "yes" ]]; then
-    
   # Create the spdnsUpdater.sh
   mkdir -p "$INSTALLPATH"
   # Write the script to file
@@ -109,12 +105,19 @@ if [ $# -eq 2 ]
 		echo
 fi
 EOF
+
+    chmod 700 "$INSTALLPATH"/spdnsUpdater.sh
+    chmod a+x "$INSTALLPATH"/spdnsUpdater.sh
+
+}
+
+configure() 
+{
+  if [[ $ACTIVE_ == "yes" ]]; then
     
     # Adds file to cron to run script for DNS record updates and change permissions 
     touch $CRONFILE
     echo "0 * * * * root $INSTALLPATH/spdnsUpdater.sh $DOMAIN_ $TOKEN_ >/dev/null 2>&1" > "$CRONFILE"
-    chmod 700 "$INSTALLPATH"/spdnsUpdater.sh
-    chmod a+x "$INSTALLPATH"/spdnsUpdater.sh
     chmod +x "$CRONFILE"
 
     # First-time execution of update script and print response from spdns.de server
@@ -124,9 +127,6 @@ EOF
   elif [[ $ACTIVE_ == "no" ]]; then
     echo "... removing cronfile: $CRONFILE"
     rm -f "$CRONFILE"
-    echo "... removing spdnsUpdater.sh script"
-    rm -f "$INSTALLPATH"/spdnsUpdater.sh
-    rmdir "$INSTALLPATH"
     echo "spdnsUpdater is now disabled"
   fi
 }
