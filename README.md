@@ -15,4 +15,4 @@ In case you want to auto update the device ip address at every reboot, insert on
 
 ### spdnsUpdaterNCP.sh
 
-This script can be used in [NextcloudPi](https://github.com/nextcloud/nextcloudpi) to automatically setup the spdnsUpdater.sh script in NextcloudPi.
+This script can be used in [NextcloudPlus](https://github.com/nextcloud/nextcloudpi) to automatically setup the spdnsUpdater.sh script in NextcloudPi.
